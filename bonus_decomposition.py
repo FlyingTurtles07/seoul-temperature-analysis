@@ -7,11 +7,22 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 import matplotlib.font_manager as fm
+import platform
+import os
 from statsmodels.tsa.seasonal import STL
 
-_font_path = '/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc'
-fm.fontManager.addfont(_font_path)
-mpl.rcParams['font.family'] = fm.FontProperties(fname=_font_path).get_name()
+system = platform.system()
+
+if system == "Windows":
+    mpl.rcParams['font.family'] = 'Malgun Gothic'
+elif system == "Darwin":  # macOS
+    mpl.rcParams['font.family'] = 'AppleGothic'
+else:  # Linux
+    _font_path = '/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc'
+    if os.path.exists(_font_path):
+        fm.fontManager.addfont(_font_path)
+        mpl.rcParams['font.family'] = fm.FontProperties(fname=_font_path).get_name()
+
 mpl.rcParams['axes.unicode_minus'] = False
 
 df = pd.read_csv('data/seoul_2021_2025_processed.csv', parse_dates=['날짜'])

@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+bon# -*- coding: utf-8 -*-
 """
 보너스 과제 A-2: 간단 예측 (베이스라인)
 방법: 과거 4년(2021~2024) 같은 '월-일'의 평균값을 사용해 2025년 12월(마지막 30일)을 예측
@@ -9,11 +9,24 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 import matplotlib.font_manager as fm
+import matplotlib.pyplot as plt
+import platform
+import os
 
-_font_path = '/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc'
-fm.fontManager.addfont(_font_path)
-mpl.rcParams['font.family'] = fm.FontProperties(fname=_font_path).get_name()
-mpl.rcParams['axes.unicode_minus'] = False
+# OS별 한글 폰트 자동 설정
+system = platform.system()
+
+if system == "Windows":
+    plt.rcParams['font.family'] = 'Malgun Gothic'
+elif system == "Darwin":  # macOS
+    plt.rcParams['font.family'] = 'AppleGothic'
+else:  # Linux
+    _font_path = '/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc'
+    if os.path.exists(_font_path):
+        fm.fontManager.addfont(_font_path)
+        plt.rcParams['font.family'] = 'Noto Sans CJK KR'
+
+plt.rcParams['axes.unicode_minus'] = False
 
 df = pd.read_csv('data/seoul_2021_2025_processed.csv', parse_dates=['날짜'])
 df['월일'] = df['날짜'].dt.strftime('%m-%d')
