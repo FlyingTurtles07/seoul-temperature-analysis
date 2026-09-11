@@ -9,12 +9,24 @@ import matplotlib.pyplot as plt
 import matplotlib as mpl
 
 import matplotlib.font_manager as fm
-_font_path = '/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc'
-fm.fontManager.addfont(_font_path)
-_font_name = fm.FontProperties(fname=_font_path).get_name()
-mpl.rcParams['font.family'] = _font_name
-mpl.rcParams['axes.unicode_minus'] = False
+import matplotlib.pyplot as plt
+import platform
+import os
 
+# OS별 한글 폰트 자동 설정
+system = platform.system()
+
+if system == "Windows":
+    plt.rcParams['font.family'] = 'Malgun Gothic'
+elif system == "Darwin":  # macOS
+    plt.rcParams['font.family'] = 'AppleGothic'
+else:  # Linux
+    _font_path = '/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc'
+    if os.path.exists(_font_path):
+        fm.fontManager.addfont(_font_path)
+        plt.rcParams['font.family'] = 'Noto Sans CJK KR'
+
+plt.rcParams['axes.unicode_minus'] = False
 # ============================================================
 # STEP A. 데이터 로드 + 전처리
 # ============================================================
